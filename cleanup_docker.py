@@ -10,7 +10,6 @@ def run_command(command, success_message, error_message):
     except subprocess.CalledProcessError:
         print(error_message)
 
-# 1. Entferne Container für Root CA
 print("Überprüfe und entferne den Container 'root_ca_container'...")
 run_command(
     "docker stop root_ca_container",
@@ -23,7 +22,6 @@ run_command(
     "Container 'root_ca_container' existiert nicht oder konnte nicht entfernt werden."
 )
 
-# 2. Entferne Container für Intermediate CA
 print("Überprüfe und entferne den Container 'intermediate_ca_container'...")
 run_command(
     "docker stop intermediate_ca_container",
@@ -36,7 +34,6 @@ run_command(
     "Container 'intermediate_ca_container' existiert nicht oder konnte nicht entfernt werden."
 )
 
-# 3. Entferne Container für Client CA
 print("Überprüfe und entferne den Container 'client_ca_container'...")
 run_command(
     "docker stop client_ca_container",
@@ -49,7 +46,6 @@ run_command(
     "Container 'client_ca_container' existiert nicht oder konnte nicht entfernt werden."
 )
 
-# 4. Entferne Container für Webserver
 print("Überprüfe und entferne den Container 'webserver'...")
 run_command(
     "docker stop webserver",
@@ -62,7 +58,6 @@ run_command(
     "Container 'webserver' existiert nicht oder konnte nicht entfernt werden."
 )
 
-# 5. Entferne zusätzliche Docker-Compose-Netzwerke (falls vorhanden)
 print("Stoppe und entferne alle Container aus 'docker-compose.yml'...")
 run_command(
     "docker-compose -f docker-compose.yml down",
@@ -77,7 +72,6 @@ run_command(
     "Fehler beim Stoppen und Entfernen des Webservers und Clients."
 )
 
-# 6. Bereinige Docker-Ressourcen
 print("Bereinige ungenutzte Docker-Ressourcen...")
 run_command(
     "docker image prune -f",
@@ -95,7 +89,6 @@ run_command(
     "Fehler beim Entfernen ungenutzter Docker-Netzwerke."
 )
 
-# 7. Bereinige den Output-Ordner
 output_dir = "./output"
 if os.path.exists(output_dir):
     print("Bereinige Output-Verzeichnis...")
