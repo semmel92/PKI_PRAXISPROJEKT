@@ -1,0 +1,12 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY client_ca/create_client_ca.py .
+
+VOLUME /app/output
+
+CMD ["python", "create_client_ca.py"]

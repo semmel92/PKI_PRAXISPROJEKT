@@ -1,0 +1,12 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y gcc libffi-dev python3-dev cargo
+
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY intermediate_ca/create_intermediate_ca.py .
+
+CMD ["python", "create_intermediate_ca.py"]

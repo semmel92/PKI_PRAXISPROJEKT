@@ -1,0 +1,31 @@
+services:
+  root_ca:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile-root-ca
+    container_name: root_ca_container
+    volumes:
+      - ./output:/app/output
+    command: ["sh", "-c", "python create_root_ca.py && cp /app/rootCA.* /app/output"]
+
+  intermediate_ca:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile-intermediate-ca
+    container_name: intermediate_ca_container
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      - root_ca
+    command: ["sh", "-c", "while [ ! -f /app/output/rootCA.key ]; do sleep 2; done && python create_intermediate_ca.py"]
+
+  client_ca:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile-client-ca
+    container_name: client_ca_container
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      - intermediate_ca
+    command: ["sh", "-c", "while [ ! -f /app/output/intermediateCA.crt ]; do sleep 2; done && python create_client_ca.py"]
