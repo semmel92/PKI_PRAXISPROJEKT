@@ -15,7 +15,7 @@ def run_command(command, error_message):
 
 print("Baue Docker-Image für Intermediate CA...")
 run_command(
-    f"docker build -t {IMAGE_NAME} -f Dockerfile-intermediate-ca .",
+    f"docker build -t {IMAGE_NAME} -f dockerfiles/Dockerfile-intermediate-ca .",
     "Fehler beim Bauen des Docker-Images für Intermediate CA."
 )
 

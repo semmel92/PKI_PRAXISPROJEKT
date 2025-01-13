@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   root_ca:
     build:
@@ -7,6 +9,8 @@ services:
     volumes:
       - ./output:/app/output
     command: ["sh", "-c", "python create_root_ca.py && cp /app/rootCA.* /app/output"]
+    networks:
+      - pki_net
 
   intermediate_ca:
     build:
@@ -18,6 +22,8 @@ services:
     depends_on:
       - root_ca
     command: ["sh", "-c", "while [ ! -f /app/output/rootCA.key ]; do sleep 2; done && python create_intermediate_ca.py"]
+    networks:
+      - pki_net
 
   client_ca:
     build:
@@ -28,4 +34,12 @@ services:
       - ./output:/app/output
     depends_on:
       - intermediate_ca
-    command: ["sh", "-c", "while [ ! -f /app/output/intermediateCA.crt ]; do sleep 2; done && python create_client_ca.py"]
+    command: ["sh", "-c", "while [ ! -f /app/output/intermediateCA.crt ]; do sleep 2; done && python create_client_ca.py && cat /app/output/client.crt /app/output/intermediateCA.crt /app/output/rootCA.crt > /app/output/fullchain.crt && sleep infinity"]
+    networks:
+      - pki_net
+
+
+
+networks:
+  pki_net:
+    driver: bridge

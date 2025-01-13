@@ -15,7 +15,7 @@ def run_command(command, error_message):
 
 print("Baue Docker-Image für Root CA...")
 run_command(
-    f"docker build -t {IMAGE_NAME} -f Dockerfile-root-ca .",
+    f"docker build -t {IMAGE_NAME} -f dockerfiles/Dockerfile-root-ca .",
     "Fehler beim Bauen des Docker-Images für Root CA."
 )
 
